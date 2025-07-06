@@ -33,21 +33,6 @@ Add screenshots, logs, or test results that show your changes work as expected.
 > - ✅ Test output showing all unit tests pass  
 > - ✅ Link to deployed preview if available
 
----
-
-## 🗒️ TODOs
-
-List any tasks that must be completed before merging.  
-Helps keep everyone aligned and avoid partial work.
-
-- [ ] Add unit tests for new functionality
-- [ ] Update related documentation if needed
-- [ ] Refactor duplicated logic in `AuthProvider`
-- [ ] Confirm new styles match the Figma design
-- [ ] Double-check error handling for edge cases
-
-> **Tip:**  
-> Use clear checklists for any extra steps your PR needs.
 
 ---
 
