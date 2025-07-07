@@ -1,9 +1,9 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
-import Colors from '@/constants/Colors';
-import { Fonts } from '@/constants/Fonts';
-import { useMarkets } from '@/hooks/useMarkets';
-import BubbleLoader from '@/components/BubbleLoader';
+import Colors from '@/src/constants/Colors';
+import { Fonts } from '@/src/constants/Fonts';
+import { useMarkets } from '@/src/hooks/useMarkets';
+import BubbleLoader from '@/src/components/BubbleLoader';
 
 export default function MarketDetails() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   title: {
-    color: Colors.text,
+    color: Colors.textPrimary,
     fontFamily: Fonts.bold,
     fontSize: 24,
     marginBottom: 30,
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   optionLabel: {
-    color: Colors.text,
+    color: Colors.textPrimary,
     fontFamily: Fonts.bold,
     fontSize: 16,
     marginBottom: 6,

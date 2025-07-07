@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Market } from '@/hooks/useMarkets';
-import { Colors } from '@/constants/Colors';
-import { Fonts } from '@/constants/Fonts';
+import { Market } from '@/src/hooks/useMarkets';
+import { Colors } from '@/src/constants/Colors';
+import { Fonts } from '@/src/constants/Fonts';
 
 interface Props {
   market: Market;
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   question: {
-    color: Colors.text,
+    color: Colors.textPrimary,
     fontFamily: Fonts.bold,
     fontSize: 16,
     marginBottom: 15,
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   optionLabel: {
-    color: Colors.text,
+    color: Colors.textPrimary,
     fontFamily: Fonts.bold,
     fontSize: 14,
   },

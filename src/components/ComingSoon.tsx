@@ -1,12 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Colors from '@/constants/Colors';
-import { Fonts } from '@/constants/Fonts';
+import Colors from '@/src/constants/Colors';
+import { Fonts } from '@/src/constants/Fonts';
 
-export default function ComingSoon() {
+interface ComingSoonProps {
+  title?: string;
+}
+
+export default function ComingSoon({ title = 'Coming Soon' }: ComingSoonProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Coming Soon</Text>
+      <Text style={styles.text}>{title}</Text>
     </View>
   );
 }

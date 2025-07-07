@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, View, StyleSheet, Image } from 'react-native';
-import Colors from '@/constants/Colors';
+import Colors from '@/src/constants/Colors';
 
 export default function BubbleLoader() {
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -28,7 +28,7 @@ export default function BubbleLoader() {
   return (
     <View style={styles.container}>
       <Animated.Image
-        source={require('@/assets/icons/bubble.png')}
+        source={require('../assets/icons/bubble.png')}
         style={[
           styles.bubble,
           {

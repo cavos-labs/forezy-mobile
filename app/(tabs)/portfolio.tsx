@@ -1,5 +1,6 @@
-import ComingSoon from '@/components/ComingSoon';
+import { View } from 'react-native';
+import ComingSoon from '@/src/components/ComingSoon';
 
 export default function PortfolioScreen() {
-  return <ComingSoon />;
+  return <ComingSoon title="Portfolio" />;
 }

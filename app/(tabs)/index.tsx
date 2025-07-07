@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useMarkets } from '@/hooks/useMarkets';
-import { PredictionCard } from '@/components/PredictionCard';
-import Colors from '@/constants/Colors';
-import { Fonts } from '@/constants/Fonts';
-import BubbleLoader from '@/components/BubbleLoader';
+import { useMarkets } from '@/src/hooks/useMarkets';
+import { PredictionCard } from '@/src/components/PredictionCard';
+import Colors from '@/src/constants/Colors';
+import { Fonts } from '@/src/constants/Fonts';
+import BubbleLoader from '@/src/components/BubbleLoader';
 
 export default function TrendingScreen() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
@@ -30,14 +30,14 @@ export default function TrendingScreen() {
     <View style={styles.container}>
       {/* Logo y bell */}
       <View style={styles.topRow}>
-        <Image source={require('@/assets/images/logo.png')} style={styles.logo} />
-        <Image source={require('@/assets/images/bell.png')} style={styles.bell} />
+        <Image source={require('../../src/assets/images/logo.png')} style={styles.logo} />
+        <Image source={require('../../src/assets/images/bell.png')} style={styles.bell} />
       </View>
 
       {/* Título */}
       <View style={styles.titleRow}>
         <Text style={styles.titleText}>Trending</Text>
-        <Image source={require('@/assets/images/chart.png')} style={styles.chart} />
+        <Image source={require('../../src/assets/images/chart.png')} style={styles.chart} />
       </View>
 
       {/* Filtro sort */}
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     marginTop: 35,
   },
   titleText: {
-    color: Colors.text,
+    color: Colors.textPrimary,
     fontFamily: Fonts.bold,
     fontSize: 24,
   },

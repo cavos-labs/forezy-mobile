@@ -1,9 +1,25 @@
 import { Tabs } from 'expo-router';
-import { Image, View, StyleSheet, SafeAreaView } from 'react-native';
+import { Image, View, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
+import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
+
 import Colors from '@/src/constants/Colors';
 
-export default function TabLayout() {
+export default function TabNavigator() {
+  const [fontsLoaded] = useFonts({
+    'Orbitron-Regular': require('@/assets/fonts/Orbitron-Regular.ttf'),
+    'Orbitron-Bold': require('@/assets/fonts/Orbitron-Bold.ttf'),
+    'Pirulen': require('@/assets/fonts/Pirulen Rg.otf'),
+  });
+
+  if (!fontsLoaded) {
+    return (
+      <View style={{ flex: 1, backgroundColor: Colors.background, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: Colors.background }}>
       <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }}>
@@ -40,12 +56,12 @@ export default function TabLayout() {
                 <View style={styles.iconWrapper}>
                   {focused && (
                     <Image
-                      source={require('../../src/assets/icons/bubble.png')}
+                      source={require('@/assets/icons/bubble.png')}
                       style={styles.bubble}
                     />
                   )}
                   <Image
-                    source={require('../../src/assets/icons/home.png')}
+                    source={require('@/assets/icons/home.png')}
                     style={[
                       styles.icon,
                       focused && {
@@ -68,12 +84,12 @@ export default function TabLayout() {
                 <View style={styles.iconWrapper}>
                   {focused && (
                     <Image
-                      source={require('../../src/assets/icons/bubble.png')}
+                      source={require('@/assets/icons/bubble.png')}
                       style={styles.bubble}
                     />
                   )}
                   <Image
-                    source={require('../../src/assets/icons/dollar.png')}
+                    source={require('@/assets/icons/dollar.png')}
                     style={[
                       styles.icon,
                       focused && {
@@ -96,12 +112,12 @@ export default function TabLayout() {
                 <View style={styles.iconWrapper}>
                   {focused && (
                     <Image
-                      source={require('../../src/assets/icons/bubble.png')}
+                      source={require('@/assets/icons/bubble.png')}
                       style={styles.bubble}
                     />
                   )}
                   <Image
-                    source={require('../../src/assets/icons/cloud.png')}
+                    source={require('@/assets/icons/cloud.png')}
                     style={[
                       styles.icon,
                       focused && {
@@ -124,12 +140,12 @@ export default function TabLayout() {
                 <View style={styles.iconWrapper}>
                   {focused && (
                     <Image
-                      source={require('../../src/assets/icons/bubble.png')}
+                      source={require('@/assets/icons/bubble.png')}
                       style={styles.bubble}
                     />
                   )}
                   <Image
-                    source={require('../../src/assets/icons/user.png')}
+                    source={require('@/assets/icons/user.png')}
                     style={[
                       styles.icon,
                       focused && {
@@ -168,4 +184,4 @@ const styles = StyleSheet.create({
     height: 50,
     resizeMode: 'contain',
   },
-}); 
+});
