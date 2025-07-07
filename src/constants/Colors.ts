@@ -3,8 +3,13 @@ const tintColorDark = '#fff';
 
 export const Colors = {
   background: '#000000',
-  primary: '#00FF00',
-  text: '#FFFFFF',
+  neonBg: '#041500',
+  bg: '#0D0D0D',
+  textPrimary: '#FFFFFF',
+  textSecondary: '#AAAAAA',
+  primary: '#28FF5B',
+  secondary: '#28D353',
+  gradient: ['#28FF5B', '#6AF98C'],
   grey: '#888888',
   red: '#FF0000',
   greenDark: '#003300',
