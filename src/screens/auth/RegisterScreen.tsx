@@ -4,7 +4,6 @@ import {
   Text, 
   StyleSheet, 
   Image, 
-  TextInput, 
   TouchableOpacity, 
   SafeAreaView,
   StatusBar,
@@ -13,20 +12,40 @@ import {
   TouchableWithoutFeedback,
   Keyboard
 } from 'react-native';
-import { Link, useRouter } from 'expo-router';
+import { Link as ExpoLink, useRouter } from 'expo-router';
 import Colors from '@/src/constants/Colors';
 import { Fonts } from '@/src/constants/Fonts';
+import RegisterForm from '@/src/components/auth/RegisterForm';
+import PasswordInfoModal from '@/src/components/auth/PasswordInfoModal';
+import EmailVerificationScreen from '@/src/components/auth/EmailVerificationScreen';
+import Animated, { 
+  FadeInDown, 
+  FadeIn
+} from 'react-native-reanimated';
 
 export default function RegisterScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPasswordInfo, setShowPasswordInfo] = useState(false);
+  const [verificationSent, setVerificationSent] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState('');
   const router = useRouter();
 
-  const handleRegister = () => {
-    // TODO: Implement actual registration logic
-    router.replace('/(tabs)');
+  const togglePasswordInfo = () => {
+    setShowPasswordInfo(!showPasswordInfo);
   };
+
+  const handleRegistrationSuccess = (email: string, needsVerification: boolean) => {
+    if (needsVerification) {
+      setRegisteredEmail(email);
+      setVerificationSent(true);
+    } else {
+      router.replace('/auth/login');
+    }
+  };
+
+  // If verification has been sent, show verification screen
+  if (verificationSent) {
+    return <EmailVerificationScreen email={registeredEmail} />;
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -38,79 +57,48 @@ export default function RegisterScreen() {
             style={styles.keyboardAvoid}
           >
             <View style={styles.content}>
-              <View style={styles.logoContainer}>
+              <Animated.Text 
+                style={styles.title}
+                entering={FadeIn.delay(300).duration(800)}
+              >
+                Create Account
+              </Animated.Text>
+              
+              <RegisterForm 
+                onTogglePasswordInfo={togglePasswordInfo}
+                onRegistrationSuccess={handleRegistrationSuccess}
+              />
+              
+              <View style={styles.loginContainer}>
+                <Text style={styles.loginText}>
+                  Already have an account?{' '}
+                </Text>
+                <ExpoLink href="/auth/login" asChild>
+                  <TouchableOpacity>
+                    <Text style={styles.loginLink}>Sign In</Text>
+                  </TouchableOpacity>
+                </ExpoLink>
+              </View>
+              
+              <Animated.View 
+                style={styles.logoContainer}
+                entering={FadeInDown.duration(800).springify()}
+              >
                 <Image 
                   source={require('@/src/assets/images/forezy-logo.png')} 
                   style={styles.logo}
                   resizeMode="contain"
                 />
-              </View>
-              
-              <Text style={styles.title}>Create Account</Text>
-              
-              <View style={styles.formContainer}>
-                <View style={styles.inputContainer}>
-                  <Text style={styles.label}>Email</Text>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter your email"
-                    placeholderTextColor={Colors.textSecondary}
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                  />
-                </View>
-                
-                <View style={styles.inputContainer}>
-                  <Text style={styles.label}>Password</Text>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter your password"
-                    placeholderTextColor={Colors.textSecondary}
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                  />
-                </View>
-
-                <View style={styles.inputContainer}>
-                  <Text style={styles.label}>Confirm Password</Text>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Confirm your password"
-                    placeholderTextColor={Colors.textSecondary}
-                    value={confirmPassword}
-                    onChangeText={setConfirmPassword}
-                    secureTextEntry
-                  />
-                </View>
-                
-                <View style={styles.buttonContainer}>
-                  <TouchableOpacity 
-                    style={styles.buttonOuter}
-                    onPress={handleRegister}
-                  >
-                    <View style={styles.buttonInner}>
-                      <Text style={styles.buttonText}>Register</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                
-                <View style={styles.loginContainer}>
-                  <Text style={styles.loginText}>
-                    Already have an account?{' '}
-                  </Text>
-                  <Link href="/auth/login" asChild>
-                    <TouchableOpacity>
-                      <Text style={styles.loginLink}>Sign In</Text>
-                    </TouchableOpacity>
-                  </Link>
-                </View>
-              </View>
+              </Animated.View>
             </View>
           </KeyboardAvoidingView>
         </SafeAreaView>
+
+        {/* Password Requirements Modal */}
+        <PasswordInfoModal 
+          visible={showPasswordInfo} 
+          onClose={togglePasswordInfo} 
+        />
       </View>
     </TouchableWithoutFeedback>
   );
@@ -133,101 +121,36 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  logoContainer: {
-    width: '100%',
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  logo: {
-    width: 150,
-    height: 150,
-  },
   title: {
     fontSize: 28,
     fontFamily: Fonts.bold,
-    color: Colors.primary,
+    color: 'white',
     marginBottom: 30,
     textAlign: 'center',
-  },
-  formContainer: {
-    width: '100%',
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  label: {
-    color: Colors.textPrimary,
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    marginBottom: 8,
-  },
-  input: {
-    backgroundColor: '#1A1A1A',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: Colors.primary,
-    color: Colors.textPrimary,
-    paddingHorizontal: 15,
-    paddingVertical: 12,
-    fontSize: 16,
-    fontFamily: Fonts.regular,
-  },
-  buttonContainer: {
-    width: '100%',
-    alignItems: 'center',
-    marginBottom: 20,
-    marginTop: 10,
-  },
-  buttonOuter: {
-    width: '100%',
-    backgroundColor: Colors.primary,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: Colors.primary,
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 15,
-    elevation: 10,
-    overflow: 'visible',
-  },
-  buttonInner: {
-    width: '100%',
-    paddingVertical: 12,
-    paddingHorizontal: 40,
-    backgroundColor: '#0D0D0D',
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#C1D1CE',
-    shadowOffset: { width: 2, height: 3 },
-    shadowOpacity: 0.8,
-    shadowRadius: 9,
-    elevation: 5,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontFamily: Fonts.pirulen,
-    textAlign: 'center',
-    fontWeight: '400',
   },
   loginContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 30,
+    marginBottom: 40,
   },
   loginText: {
-    color: Colors.textPrimary,
+    color: Colors.textSecondary,
     fontSize: 14,
     fontFamily: Fonts.regular,
   },
   loginLink: {
     color: Colors.primary,
     fontSize: 14,
-    fontFamily: Fonts.bold,
+    fontFamily: Fonts.regular,
   },
+  logoContainer: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  logo: {
+    width: 120,
+    height: 120,
+  }
 }); 
