@@ -1,134 +1,194 @@
-import React, { useEffect } from 'react';
 import { Tabs } from 'expo-router';
-import { Pressable, useColorScheme, StatusBar, Image, View, StyleSheet } from 'react-native';
-import { Fonts } from '@/src/constants/Fonts';
+import { Image, View, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
 import Colors from '@/src/constants/Colors';
-import { ProtectedRoute } from '@/src/components/auth/ProtectedRoute';
+import { useFonts } from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function RootLayout() {
 
-  useEffect(() => {
-    StatusBar.setBarStyle('light-content');
-  }, []);
+  const [fontsLoaded] = useFonts({
+    'Orbitron-Regular': require('@/src/assets/fonts/Orbitron-Regular.ttf'),
+    'Orbitron-Bold': require('@/src/assets/fonts/Orbitron-Bold.ttf'),
+  });
+
+  if (!fontsLoaded) { 
+    <View style={{ flex: 1, backgroundColor: Colors.background, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+    </View>
+  }
 
   return (
-    <ProtectedRoute>
-      <Tabs
-        screenOptions={{
-          headerShown: false,
-          tabBarStyle: {
-            backgroundColor: '#0D0D0D',
-            borderTopWidth: 0,
-            height: 60,
-            paddingBottom: 10,
-            paddingTop: 10,
-            borderRadius: 15,
-            marginHorizontal: 10,
-            marginBottom: 10,
-            position: 'absolute',
-            shadowColor: Colors.primary,
-            shadowOffset: { width: 0, height: 0 },
-            shadowOpacity: 0.3,
-            shadowRadius: 10,
-            elevation: 10,
-          },
-          tabBarActiveTintColor: Colors.primary,
-          tabBarInactiveTintColor: '#888',
-          tabBarLabelStyle: {
-            fontFamily: Fonts.regular,
-            fontSize: 12,
-          },
-        }}
-      >
-        <Tabs.Screen
-          name="index"
-          options={{
-            title: 'Home',
-            tabBarIcon: ({ focused }) => (
-              <TabBarIcon
-                focused={focused}
-                icon={require('@/src/assets/icons/home.png')}
-              />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="portfolio"
-          options={{
-            title: 'Portfolio',
-            tabBarIcon: ({ focused }) => (
-              <TabBarIcon
-                focused={focused}
-                icon={require('@/src/assets/icons/dollar.png')}
-              />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="predictions"
-          options={{
-            title: 'Predictions',
-            tabBarIcon: ({ focused }) => (
-              <TabBarIcon
-                focused={focused}
-                icon={require('@/src/assets/icons/cloud.png')}
-              />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="profile"
-          options={{
-            title: 'Profile',
-            tabBarIcon: ({ focused }) => (
-              <TabBarIcon
-                focused={focused}
-                icon={require('@/src/assets/icons/user.png')}
-              />
-            ),
-          }}
-        />
-      </Tabs>
-    </ProtectedRoute>
-  );
-}
+    <View style={{ flex: 1, backgroundColor: Colors.background }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }}>
+        <StatusBar style="light" backgroundColor="#000000" translucent={false} />
+        <Tabs
+              screenOptions={{
+                headerShown: false,
+                tabBarShowLabel: false,
+                tabBarStyle: {
+                  backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                  borderWidth: 2,            
+                  borderColor: Colors.primary, 
+                  borderRadius: 20,          
+                  marginHorizontal: 16,      
+                  height: 70,                
+                  paddingBottom: 20,        
+                  paddingTop: 10,
+                  marginBottom: 15,
+                  marginTop: 5,
+                  overflow: 'visible',
 
-function TabBarIcon(props: {
-  focused: boolean;
-  icon: any;
-}) {
-  return (
-    <View style={[styles.iconContainer, props.focused && styles.focusedIconContainer]}>
-      <Image
-        source={props.focused ? require('@/src/assets/icons/bubble.png') : props.icon}
-        style={[
-          styles.icon,
-          props.focused && styles.focusedIcon
-        ]}
-      />
+                  // Neon glow (outer)
+                  shadowColor: Colors.green,
+                  shadowOpacity: 0.5,
+                  shadowOffset: { width: 0, height: 0 },
+                  shadowRadius: 12,
+                },
+              }}
+              >
+              <Tabs.Screen
+                name="index"
+                options={{
+                  tabBarIcon: ({ focused }) => (
+                    <View style={styles.iconWrapper}>
+                      {focused && (
+                        <Image
+                          source={require('@/src/assets/icons/bubble.png')}
+                          style={styles.bubble}
+                        />
+                      )}
+                      <Image
+                        source={require('@/src/assets/icons/home.png')}
+                        style={[
+                          styles.icon,
+                          focused && {
+                            tintColor: Colors.primary,
+                            transform: [{ translateY: -10 }], 
+                            width: 60, 
+                            height: 60,
+                          },
+                        ]}
+                      />
+                    </View>
+                  ),
+                }}
+              />
+
+              <Tabs.Screen
+                name="portfolio"
+                options={{
+                  tabBarIcon: ({ focused }) => (
+                    <View style={styles.iconWrapper}>
+                      {focused && (
+                        <Image
+                          source={require('@/src/assets/icons/bubble.png')}
+                          style={styles.bubble}
+                        />
+                      )}
+                      <Image
+                        source={require('@/src/assets/icons/dollar.png')}
+                        style={[
+                          styles.icon,
+                          focused && {
+                            tintColor: Colors.primary,
+                            transform: [{ translateY: -10 }],
+                            width: 60,
+                            height: 60,
+                          },
+                        ]}
+                      />
+                    </View>
+                  ),
+                }}
+              />
+
+              <Tabs.Screen
+                name="predictions"
+                options={{
+                  tabBarIcon: ({ focused }) => (
+                    <View style={styles.iconWrapper}>
+                      {focused && (
+                        <Image
+                          source={require('@/src/assets/icons/bubble.png')}
+                          style={styles.bubble}
+                        />
+                      )}
+                      <Image
+                        source={require('@/src/assets/icons/cloud.png')}
+                        style={[
+                          styles.icon,
+                          focused && {
+                            tintColor: Colors.primary,
+                            transform: [{ translateY: -10 }],
+                            width: 60,
+                            height: 60,
+                          },
+                        ]}
+                      />
+                    </View>
+                  ),
+                }}
+              />
+
+              <Tabs.Screen
+                name="profile"
+                options={{
+                  tabBarIcon: ({ focused }) => (
+                    <View style={styles.iconWrapper}>
+                      {focused && (
+                        <Image
+                          source={require('@/src/assets/icons/bubble.png')}
+                          style={styles.bubble}
+                        />
+                      )}
+                      <Image
+                        source={require('@/src/assets/icons/user.png')}
+                        style={[
+                          styles.icon,
+                          focused && {
+                            tintColor: Colors.primary,
+                            transform: [{ translateY: -10 }],
+                            width: 60,
+                            height: 60,
+                          },
+                        ]}
+                      />
+                    </View>
+                  ),
+                }}
+              />
+        </Tabs>
+      </SafeAreaView>
     </View>
   );
+
 }
 
 const styles = StyleSheet.create({
-  iconContainer: {
-    width: 24,
-    height: 24,
-    justifyContent: 'center',
+  iconWrapper: {
     alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 6,
   },
-  focusedIconContainer: {
-    width: 40,
-    height: 40,
+  bubble: {
+    position: 'absolute',
+    width: 80,
+    height: 80,
+    resizeMode: 'contain',
+    transform: [{ translateY: -10 }]
   },
   icon: {
-    width: 24,
-    height: 24,
+    width: 50,
+    height: 50,
     resizeMode: 'contain',
   },
-  focusedIcon: {
-    width: 40,
-    height: 40,
-  }
-}); 
+  tabBarWrapper: {
+    flex: 1,
+    borderWidth: 2,
+    borderColor: Colors.primary,
+    borderRadius: 20,
+    marginHorizontal: 16,
+    marginBottom: 15,
+    overflow: 'hidden',
+  },
+});

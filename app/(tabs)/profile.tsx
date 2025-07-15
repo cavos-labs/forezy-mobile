@@ -1,22 +1,28 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, Modal } from 'react-native';
+import { Header } from '@/src/components/Header';
 import Colors from '@/src/constants/Colors';
 import { Fonts } from '@/src/constants/Fonts';
+import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/src/contexts/AuthContext';
+import AnimatedButton from '@/src/components/ui/AnimatedButton';
 
 export default function ProfileScreen() {
-  const { user, logout } = useAuth();
+  const [showModal, setShowModal] = useState(false);
+  const { user, logout, isLoading } = useAuth();
 
   const handleLogout = async () => {
     await logout();
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Profile</Text>
-      </View>
+    <View style={styles.container}>
+      <Header
+        title="Profile"
+        icon={require('@/src/assets/images/profile.png')}
+      />
 
+      {/* Avatar */}
       <View style={styles.profileSection}>
         <View style={styles.avatarContainer}>
           <Text style={styles.avatarText}>{user?.email?.[0].toUpperCase() || '?'}</Text>
@@ -24,12 +30,7 @@ export default function ProfileScreen() {
         <Text style={styles.email}>{user?.email}</Text>
       </View>
 
-      <View style={styles.infoSection}>
-        <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>User ID</Text>
-          <Text style={styles.infoValue}>{user?.userId}</Text>
-        </View>
-        
+      <View style={styles.infoSection}>        
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>Wallet Address</Text>
           <Text style={styles.infoValue} numberOfLines={1} ellipsizeMode="middle">
@@ -37,18 +38,41 @@ export default function ProfileScreen() {
           </Text>
         </View>
       </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity 
-          style={styles.buttonOuter}
+      
+      {/* Action Buttons */}
+      <View style={styles.actionsColumn}>
+        <AnimatedButton
+          title="Logout"
           onPress={handleLogout}
-        >
-          <View style={styles.buttonInner}>
-            <Text style={styles.buttonText}>Logout</Text>
-          </View>
+          isLoading={isLoading}
+          disabled={isLoading}
+        />
+
+        <TouchableOpacity style={styles.deleteAccount} onPress={() => setShowModal(true)}>
+          <Ionicons name="trash-outline" size={16} color={Colors.red} style={{ marginRight: 6 }} />
+          <Text style={styles.deleteText}>Eliminar Cuenta</Text>
         </TouchableOpacity>
+
+        <Modal
+          animationType="fade"
+          transparent
+          visible={showModal}
+          onRequestClose={() => setShowModal(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>¿Estás seguro de eliminar tu cuenta?</Text>
+              <TouchableOpacity style={styles.confirmButton}>
+                <Text style={styles.confirmButtonText}>Sí, eliminar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setShowModal(false)}>
+                <Text style={styles.cancelText}>Cancelar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -56,21 +80,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-  },
-  header: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontFamily: Fonts.bold,
-    color: Colors.primary,
-  },
-  profileSection: {
-    alignItems: 'center',
-    paddingVertical: 30,
+    paddingHorizontal: 16,
   },
   avatarContainer: {
     width: 100,
@@ -91,11 +101,77 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.bold,
     color: Colors.background,
   },
+  actionsColumn: {
+    alignItems: 'center',
+    marginTop: 80,
+    marginBottom: 20,
+  },
+  deleteAccount: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 40,
+  },
+  deleteText: {
+    color: Colors.red,
+    fontFamily: Fonts.regular,
+    fontSize: 12,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: Colors.background,
+    borderRadius: 12,
+    padding: 30,
+    width: '80%',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Colors.primary,
+  },
+  modalTitle: {
+    color: Colors.textPrimary,
+    fontFamily: Fonts.bold,
+    fontSize: 18,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  confirmButton: {
+    backgroundColor: Colors.background,
+    borderWidth: 1,
+    borderColor: Colors.red,
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    marginBottom: 15,
+  },
+  confirmButtonText: {
+    color: Colors.red,
+    fontFamily: Fonts.bold,
+    fontSize: 16,
+  },
+  cancelText: {
+    color: Colors.grey,
+    fontFamily: Fonts.regular,
+    fontSize: 14,
+  },
+
+  profileSection: {
+    alignItems: 'center',
+    paddingVertical: 30,
+  },
   email: {
     fontSize: 18,
     fontFamily: Fonts.regular,
     color: Colors.textPrimary,
     marginTop: 10,
+  },
+  infoValue: {
+    fontSize: 16,
+    fontFamily: Fonts.regular,
+    color: Colors.textPrimary,
   },
   infoSection: {
     paddingHorizontal: 20,
@@ -113,51 +189,5 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     marginBottom: 5,
   },
-  infoValue: {
-    fontSize: 16,
-    fontFamily: Fonts.regular,
-    color: Colors.textPrimary,
-  },
-  buttonContainer: {
-    width: '100%',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    marginTop: 30,
-  },
-  buttonOuter: {
-    width: '100%',
-    backgroundColor: Colors.primary,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: Colors.primary,
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 15,
-    elevation: 10,
-    overflow: 'visible',
-  },
-  buttonInner: {
-    width: '100%',
-    paddingVertical: 12,
-    paddingHorizontal: 40,
-    backgroundColor: '#0D0D0D',
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#C1D1CE',
-    shadowOffset: { width: 2, height: 3 },
-    shadowOpacity: 0.8,
-    shadowRadius: 9,
-    elevation: 5,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontFamily: Fonts.pirulen,
-    textAlign: 'center',
-    fontWeight: '400',
-  },
+
 });

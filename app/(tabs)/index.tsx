@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useMarkets } from '@/src/hooks/useMarkets';
 import { PredictionCard } from '@/src/components/PredictionCard';
+import { Header } from '@/src/components/Header';
 import Colors from '@/src/constants/Colors';
 import { Fonts } from '@/src/constants/Fonts';
 import BubbleLoader from '@/src/components/BubbleLoader';
@@ -28,17 +29,10 @@ export default function TrendingScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Logo y bell */}
-      <View style={styles.topRow}>
-        <Image source={require('../../src/assets/images/logo.png')} style={styles.logo} />
-        <Image source={require('../../src/assets/images/bell.png')} style={styles.bell} />
-      </View>
-
-      {/* Título */}
-      <View style={styles.titleRow}>
-        <Text style={styles.titleText}>Trending</Text>
-        <Image source={require('../../src/assets/images/chart.png')} style={styles.chart} />
-      </View>
+      <Header
+        title="Trending"
+        icon={require('@/src/assets/images/chart.png')}
+      />
 
       {/* Filtro sort */}
       <TouchableOpacity onPress={toggleSortOrder} style={styles.sortButton}>
