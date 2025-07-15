@@ -4,6 +4,8 @@ import { Link, useRouter } from 'expo-router';
 import { ArrowLeftFromLine } from 'lucide-react-native';
 import Colors from '@/src/constants/Colors';
 import { Fonts } from '@/src/constants/Fonts';
+import AnimatedButton from '@/src/components/ui/AnimatedButton';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 export default function IntroScreen() {
   const router = useRouter();
@@ -12,25 +14,39 @@ export default function IntroScreen() {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <SafeAreaView style={styles.safeArea}>
-        <View style={styles.header}>
+        <Animated.View 
+          style={styles.header}
+          entering={FadeIn.delay(200).duration(500)}
+        >
           <TouchableOpacity 
             style={styles.backButton} 
             onPress={() => router.back()}
           >
             <ArrowLeftFromLine color={Colors.primary} size={24} />
           </TouchableOpacity>
-        </View>
+        </Animated.View>
         
         <View style={styles.content}>
-          <Text style={styles.title}>What is Forezy?</Text>
+          <Animated.Text 
+            style={styles.title}
+            entering={FadeIn.delay(300).duration(800)}
+          >
+            What is Forezy?
+          </Animated.Text>
           
-          <View style={styles.descriptionContainer}>
+          <Animated.View 
+            style={styles.descriptionContainer}
+            entering={FadeIn.delay(400).duration(800)}
+          >
             <Text style={styles.description}>
               The easiest way to predict real-world events, earn rewards and build your prediction reputation.
             </Text>
-          </View>
+          </Animated.View>
           
-          <View style={styles.featuresContainer}>
+          <Animated.View 
+            style={styles.featuresContainer}
+            entering={FadeIn.delay(500).duration(800)}
+          >
             <Text style={styles.featureTitle}>Predict</Text>
             <Text style={styles.featureDescription}>
               Make predictions on real-world events across markets, sports, crypto, and more.
@@ -45,17 +61,19 @@ export default function IntroScreen() {
             <Text style={styles.featureDescription}>
               Establish your reputation as a top predictor in the Starknet ecosystem.
             </Text>
-          </View>
+          </Animated.View>
           
-          <View style={styles.buttonContainer}>
+          <Animated.View 
+            style={styles.buttonContainer}
+            entering={FadeIn.delay(600).duration(800)}
+          >
             <Link href="/onboarding/how-to-play" asChild>
-              <TouchableOpacity style={styles.buttonOuter}>
-                <View style={styles.buttonInner}>
-                  <Text style={styles.buttonText}>Continue</Text>
-                </View>
-              </TouchableOpacity>
+              <AnimatedButton
+                title="Continue"
+                onPress={() => {}}
+              />
             </Link>
-          </View>
+          </Animated.View>
         </View>
       </SafeAreaView>
     </View>
@@ -89,7 +107,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontFamily: Fonts.bold,
-    color: Colors.primary,
+    color: Colors.textPrimary,
     marginBottom: 30,
     textAlign: 'center',
   },
@@ -126,42 +144,5 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
     marginTop: 20,
-  },
-  buttonOuter: {
-    width: '100%',
-    backgroundColor: Colors.primary,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: Colors.primary,
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 15,
-    elevation: 10,
-    overflow: 'visible',
-  },
-  buttonInner: {
-    width: '100%',
-    paddingVertical: 10,
-    paddingHorizontal: 40,
-    backgroundColor: '#0D0D0D',
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#C1D1CE',
-    shadowOffset: { width: 2, height: 3 },
-    shadowOpacity: 0.8,
-    shadowRadius: 9,
-    elevation: 5,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 15,
-    fontFamily: Fonts.pirulen,
-    textAlign: 'center',
-    fontWeight: '400',
-    lineHeight: 20,
   },
 }); 
