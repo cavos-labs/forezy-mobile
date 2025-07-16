@@ -1,5 +1,5 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import Colors from '@/src/constants/Colors';
 import { Fonts } from '@/src/constants/Fonts';
 import { useMarkets } from '@/src/hooks/useMarkets';
@@ -37,7 +37,7 @@ export default function MarketDetails() {
   const optionNo = { label: 'NO', percentage: 50 };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={() => router.back()}>
         <Text style={styles.back}>← Back</Text>
       </TouchableOpacity>
@@ -70,7 +70,7 @@ export default function MarketDetails() {
           Expires: {new Date(market.resolutionTime).toLocaleString()}
         </Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
